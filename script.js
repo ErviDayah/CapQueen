@@ -106,7 +106,7 @@ const produkList = [
     nama: "Charlote Cap",
     harga: 159000,
     hargaDiskon: 99000,
-    gambar: "img/charlote.jpg",
+    gambar: "img/Charlote.jpg",
     rating: 5,
     stok: 2,
     bahan: "Katun ",
