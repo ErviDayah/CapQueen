@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout Berhasil | CapQueen</title>
+    <link rel="icon" href="img/logo_CQ_RBG.png" type="image/svg+xml" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="min-h-screen flex flex-col justify-center items-center p-4">
+      <div
+        class="bg-white rounded-xl shadow-xl p-8 max-w-lg w-full text-center relative"
+      >
+        <img
+          src="img/logo_CQ_RBG.png"
+          alt="CapQueen Logo"
+          class="mx-auto mb-4 h-16"
+        />
+        <div class="mb-4">
+          <h1 class="text-2xl font-bold text-emerald-600">
+            ✅ Checkout Berhasil!
+          </h1>
+          <p class="text-sm text-gray-500 mt-1">
+            Terima kasih telah berbelanja di <strong>CapQueen</strong>. Berikut
+            adalah struk pembelianmu:
+          </p>
+        </div>
+        <div class="mt-4 text-left text-sm" id="strukArea">
+          <!-- Struk akan diisi via JS -->
+        </div>
+        <div class="mt-6 flex justify-between gap-4">
+          <button
+            onclick="window.print()"
+            class="w-1/2 bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700"
+          >
+            🖨 Cetak Struk
+          </button>
+          <a
+            href="dashboard.html"
+            class="w-1/2 text-center bg-gray-300 text-gray-800 py-2 rounded hover:bg-gray-400"
+            >⬅ Kembali</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const strukArea = document.getElementById("strukArea");
+      const cart = JSON.parse(localStorage.getItem("cartCheckout")) || [];
+
+      function showConfetti() {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      }
+
+      if (cart.length === 0) {
+        strukArea.innerHTML = `<p class='text-center text-red-500'>Tidak ada data struk ditemukan.</p>`;
+      } else {
+        const waktu = new Date().toLocaleString("id-ID");
+        let isi = `<p class='text-sm text-gray-500 mb-2'>Tanggal: ${waktu}</p><ul class='space-y-3'>`;
+        let total = 0;
+
+        cart.forEach((item) => {
+          const subtotal = item.jumlah * item.hargaDiskon;
+          total += subtotal;
+          isi += `
+          <li class='border-b pb-2'>
+            <div class='flex justify-between'>
+              <span class='font-medium text-gray-800'>${item.nama}</span>
+              <span class='text-gray-500'>Rp ${item.hargaDiskon.toLocaleString(
+                "id-ID"
+              )}</span>
+            </div>
+            <div class='flex justify-between text-xs text-gray-500'>
+              <span>Jumlah: ${item.jumlah}</span>
+              <span>Subtotal: Rp ${subtotal.toLocaleString("id-ID")}</span>
+            </div>
+          </li>
+        `;
+        });
+
+        isi += `</ul><p class='mt-4 text-right font-bold text-lg text-emerald-600'>Total: Rp ${total.toLocaleString(
+          "id-ID"
+        )}</p>`;
+        strukArea.innerHTML = isi;
+
+        showConfetti();
+      }
+    </script>
+  </body>
+</html>
